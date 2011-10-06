@@ -5,10 +5,11 @@ public abstract class Component {
 		mSize = -1;
 	}
 	
-	/*Attributes*/
+	/*Members*/
 	private String mName;
 	private int mSize;
 	
+	/*Attributes*/
 	public String name() {
 		return mName;
 	}
