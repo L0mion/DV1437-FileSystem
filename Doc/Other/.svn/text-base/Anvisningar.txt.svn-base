@@ -1,0 +1,52 @@
+The new Lab or last part is to creat a filesystem
+On Its learning you can find  the parts to use in  the lab
+-          Shell
+-          Test
+-          BlockDev
+-          MemBlock
+-          Filesystem
+those are made in  “JAVA”.
+And the part “Anvisningar = Instructions” can you read   here.  Instructions to  create a Filesystem
+ 
+Next Lecture Tomorrow Göran is in the lab and can answer questions
+I am not available Wendnes day and Thursday
+But on Friday   can I have lecture 
+what time ??
+ 
+I read mail  
+ 
+ 
+ 
+-----------------------------------------------------------------------------------------
+Instructions to creat a filesystem. 
+
+You should make a file system that handles a
+secondary memory simulated as a byte array in java.
+ 
+The file system must be a hierarchical tree structure of UNIX.
+You should make a shell that supports the following commands
+(most of the normal UNIX commands).
+File name is also listed on the UNIX way and you should clear
+the name of the type aaa / bbb / cc ....., also. And .. 
+
+format - builds an empty system ( "Formatting the disc") 
+quit - leave the driving 
+save - save the system as a standard UNIX file 
+read - restore a file from a UNIX file 
+
+create - creates a file (add text to extra blank line) 
+cat - print contents of a file 
+ls - lists contents of a directory 
+copy - copy a file 
+append - add to end of a file
+rename - change the name of the file 
+mkdir - create new empty directory 
+cd - change current directory 
+pwd - prints the name of the current directory (print working directory) 
+rm - remove a file 
+
+
+items. 
+copy file1 dir1/dir2/file2 
+rm file1 
+rm dir1/dir2/file2
