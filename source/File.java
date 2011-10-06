@@ -17,6 +17,6 @@ public class File extends Component {
 	
 	public int getDataPointer() {
 	
-		return 
+		return mDataPointer;
 	}
 }
