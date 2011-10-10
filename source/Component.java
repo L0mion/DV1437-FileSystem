@@ -17,5 +17,10 @@ public abstract class Component {
 		return mSize;
 	}
 	
+	public void rename(String name) {
+	
+		mName = name;
+	}
+	
 	/*Methods*/
 }
