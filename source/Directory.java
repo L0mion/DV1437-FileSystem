@@ -100,4 +100,12 @@ public class Directory extends Component {
 		
 		return success;
 	}
+	
+	public void print() {
+	
+		for(int i=0; i<mComponents.size(); i++) {
+		
+			System.out.println(mComponents.get(i).name());
+		}
+	}
 }
