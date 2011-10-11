@@ -14,13 +14,13 @@ public class Directory extends Component implements Serializable{
 	
 	/*Members*/
 	private ArrayList<Component> mComponents;
-	private mParent;
+	private Component mParent;
 	
 	/*Attributes*/
 	
 	/*Methods*/
 	
-	private Component getParent() {
+	public Component getParent() {
 	
 		return mParent;
 	}

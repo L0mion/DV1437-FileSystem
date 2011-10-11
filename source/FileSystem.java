@@ -1,4 +1,6 @@
+
 import java.util.*;
+import java.io.*;
 
 /*This is the main class of the program*/
 
@@ -6,7 +8,7 @@ public class FileSystem {
 	
 	/*Constructors*/
 	public FileSystem() {
-		mCurrentDirectory = new Directory("root");
+		mCurrentDirectory = new Directory("root", null);
 		mCurrentAction = "";
 		mInput = new Scanner(System.in);
 		mRunning = true;	
@@ -153,7 +155,13 @@ public class FileSystem {
 		/*
 		 * Save root which will save everything under root
 		 */
-		 
-		 FileOutputStream fileStream = new FileOutputStream("../resources/
+		 try {
+			 
+			FileOutputStream fileStream = new FileOutputStream("../resources/fileSystem.ffs");
+			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
+			objectStream.writeObject(mCurrentDirectory);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
