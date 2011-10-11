@@ -271,9 +271,10 @@ public class FileSystem {
 			for(int i=blockPosition; i<File.BLOCK_SIZE; i++) {
 			
 				mBlocks.get(currentBlock)[i] = bytes[currentByte];
-			
+
 				currentByte++;
 				if(currentByte >= bytes.length) {
+					file.setBlockPosition(i+1);
 					break;
 				}
 				if(i >= File.BLOCK_SIZE) {
@@ -413,11 +414,20 @@ public class FileSystem {
 						
 						ArrayList<Integer> blockIndexes = file.getDataPointer();
 						for(int i=0; i<blockIndexes.size(); i++) {
-						
-							for(int j=0; j<File.BLOCK_SIZE; j++) {
-								System.out.print(mBlocks.get(blockIndexes.get(i))[j] + "  ");
+							
+							if(blockIndexes.get(i) == file.getCurrentBlockIndex()) {
+								for(int j=0; j<file.getBlockPosition(); j++) {
+									System.out.print(mBlocks.get(blockIndexes.get(i))[j] + "  ");
+								}
+							}
+							else {
+								for(int j=0; j<File.BLOCK_SIZE; j++) {
+									System.out.print(mBlocks.get(blockIndexes.get(i))[j] + "  ");
+								}
 							}
 						}
+						
+						System.out.print("\n");
 					}
 				}
 			}
