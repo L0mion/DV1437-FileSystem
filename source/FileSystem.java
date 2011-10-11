@@ -113,6 +113,7 @@ public class FileSystem {
 			mRunning = false;
 		}
 		else if(mCurrentAction.equals("copy")) {
+			copyFile();
 		}
 		else if(mCurrentAction.equals("append")) {
 			append();
@@ -205,11 +206,7 @@ public class FileSystem {
 			}
 		}
 	}
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 7afd49723bd10d6a6485d77061689562c709d71b
 	private void append() {
 		
 		if(mPaths.size() > 0) {
@@ -387,8 +384,7 @@ public class FileSystem {
 				tempDirectory.addComponent(new File(step));
 			}
 		}
-	}
-
+	} 
 	private void cat() {
 		
 		if(mPaths.size() > 0) {
@@ -425,7 +421,8 @@ public class FileSystem {
 					}
 				}
 			}
-		
+		}
+	}
 	private void removeComponent() {
 		if(mPaths.size() > 0) {
 			Directory tempDirectory = mCurrentDirectory;
@@ -460,6 +457,63 @@ public class FileSystem {
 		}
 		else {
 			System.out.println("Please specify path: rm/remove path");
+		}
+	}
+	private void copyFile() {
+		if(mPaths.size() < 2) {
+			System.out.println("Not enough specified paths. Please specify: copy origin destination");
+		}
+		else {
+			CommandPath origin = mPaths.get(0);
+			CommandPath destination = mPaths.get(1);
+			
+			/*Find Origin*/
+			int numSteps = origin.getSize();
+			String step; boolean validOrigin = true;
+			Component org = mCurrentDirectory;
+			for(int i = 0; i  < numSteps - 1; i++) {
+				step = origin.getNext();
+				org = ((Directory)org).getComponent(step);
+				if(org == null) {
+					validOrigin = false;
+					System.out.println("False origin detected - '" + step + "'.");
+					break;
+				}
+			}
+			if(validOrigin) {
+				String originFileName = origin.getNext();
+				org = ((Directory)org).getComponent(originFileName);
+				if(org != null) {
+					if(org instanceof File) {
+						System.out.println("Origin is a file.");
+						
+						numSteps = destination.getSize();
+						boolean validDestination = true;
+						Directory dir = mCurrentDirectory;
+						for(int i = 0; i < numSteps; i++) {
+							step = destination.getNext();
+							dir = (Directory)dir.getComponent(step);
+							if(dir == null) {
+								validDestination = false;
+								System.out.println("False destination detected.");
+								break;
+							}
+						}
+						if(validDestination) {
+							/*COPY DATA*/
+							dir.addComponent(new File(org.name()));
+							
+						}
+					}
+					else {
+						/*Implement code for folders here*/
+						System.out.println("Origin is a folder. Aborting.");
+					}
+				}
+				else {
+					System.out.println("org = null");
+				}
+			}
 		}
 	}
 }
