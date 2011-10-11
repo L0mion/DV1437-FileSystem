@@ -112,8 +112,6 @@ public class FileSystem {
 		else if(mCurrentAction.equals("quit") || mCurrentAction.equals("exit")) {
 			mRunning = false;
 		}
-		else if(mCurrentAction.equals("dir")) {
-		}
 		else if(mCurrentAction.equals("copy")) {
 		}
 		else if(mCurrentAction.equals("append")) {
@@ -131,6 +129,7 @@ public class FileSystem {
 			printWorkingDirectory();
 		}
 		else if(mCurrentAction.equals("rm") || mCurrentAction.equals("remove")) {
+			removeComponent();
 		}
 		else if(mCurrentAction.equals("help")) {
 			printHelp();
@@ -144,12 +143,11 @@ public class FileSystem {
 		}
 		else if(mCurrentAction.equals("cat")) {
 		}
-		else if(mCurrentAction.equals("ls")) {
+		else if(mCurrentAction.equals("ls") || mCurrentAction.equals("dir")) {
 			list();
 		}
 	}
 
-	//Enter dedicated command functions below:
 	private void printHelp() {
 		System.out.println("\nValid commands:");
 		for(int i = 0; i < mActions.length; i++) {
@@ -204,7 +202,6 @@ public class FileSystem {
 			}
 		}
 	}
-<<<<<<< HEAD
 	
 	private void append() {
 		
@@ -306,7 +303,7 @@ public class FileSystem {
 		mCurrentDirectory = new Directory("root", null);
 		mCurrentAction = "";	
 		mPaths = new ArrayList<CommandPath>();
-		blocks = new ArrayList<byte[]>();
+		mBlocks = new ArrayList<byte[]>();
 	}
 	
 	private void save() {
@@ -356,6 +353,42 @@ public class FileSystem {
 					tempDirectory.rename(newName);
 				}
 			}
+		}
+	}
+	private void removeComponent() {
+		if(mPaths.size() > 0) {
+			Directory tempDirectory = mCurrentDirectory;
+			CommandPath targetPath = mPaths.get(0);
+			int numSteps = targetPath.getSize();
+			boolean validPath = true; boolean returnToRoot = false;
+			String step;
+			for(int i = 0; i < numSteps - 1; i++) {
+				step = targetPath.getNext();
+				if(step.equals("..") || step.equals(".")) {
+					System.out.println("System recognized '..' or '.' in delete statement. Returning to /root for system-safety.");
+					while(mCurrentDirectory.getParent() != null) {
+					mCurrentDirectory = (Directory)mCurrentDirectory.getParent();
+					}
+				}
+				tempDirectory = (Directory)tempDirectory.getComponent(step);
+				if(tempDirectory == null) {
+					System.out.println("Errounous file path.");
+					validPath = false;
+					break;
+				}
+			}
+			if(validPath) {
+				String toBeRemoved = targetPath.getNext();
+				if(tempDirectory.removeComponent(toBeRemoved)) {
+					System.out.println(toBeRemoved + " was removed sucessfully!");
+				}
+				else {
+					System.out.println("Could not find " + toBeRemoved + ".");
+				}
+			}
+		}
+		else {
+			System.out.println("Please specify path: rm/remove path");
 		}
 	}
 }
