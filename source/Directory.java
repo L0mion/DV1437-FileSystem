@@ -46,15 +46,14 @@ public class Directory extends Component implements Serializable{
 			
 			returnComponent = mParent;
 		}
-		if(name.eqauls(".")) {
+		if(name.equals(".")) {
 			
-			Component tempDirectory = this;
+			Directory tempDirectory = this;
+			Directory parent = null;
 			
-			Component parent = null;
+			while(tempDirectory.getParent() != null) {
 			
-			while(tempDirectory.getParent != null) {
-			
-				tempDirectory = tempDirectory.getParent();
+				tempDirectory = (Directory)tempDirectory.getParent();
 			}
 			
 			returnComponent = tempDirectory;
