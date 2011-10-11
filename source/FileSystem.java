@@ -14,7 +14,7 @@ public class FileSystem {
 		mRunning = true;	
 		mPaths = new ArrayList<CommandPath>();
 		mActions = new String[19];
-		//blocks = new ArrayList<byte[]>();
+		blocks = new ArrayList<byte[]>();
 		 
 		mActions[0] = "format"; 	//bygger upp ett tomt system (“formatterar skivan”)
 		mActions[1] = "quit"; 		//lämnar körningen
@@ -46,7 +46,7 @@ public class FileSystem {
 	private ArrayList<CommandPath> mPaths;
 	private String mCurrentAction;
 	private String[] mActions;
-	//private ArrayList<byte[]> blocks;
+	private ArrayList<byte[]> blocks;
 	
 	/*Attributes*/
 	
