@@ -133,7 +133,7 @@ public class Directory extends Component implements Serializable{
 	
 		for(int i=0; i<mComponents.size(); i++) {
 		
-			System.out.println(mComponents.get(i).name());
+			System.out.println("\t" + mComponents.get(i).name());
 		}
 	}
 }

@@ -119,6 +119,7 @@ public class FileSystem {
 		else if(mCurrentAction.equals("append")) {
 		}
 		else if(mCurrentAction.equals("rn") || mCurrentAction.equals("rename")) {
+			renameComponent();
 		}
 		else if(mCurrentAction.equals("mkdir")) {
 			makeDirectory();
@@ -212,7 +213,6 @@ public class FileSystem {
 			tempDirectory = (Directory)tempDirectory.getParent();
 			wd.push(tempDirectory.name());
 		}
-		System.out.print("Working Dir: ");
 		while(!wd.empty()) {
 			System.out.print(wd.pop() + "/");
 		} System.out.print("\n");
@@ -243,6 +243,35 @@ public class FileSystem {
 			objectStream.close();
 		}catch(Exception e) {
 			e.printStackTrace();
+		}
+	}
+	private void renameComponent() {
+		if(mPaths.size() < 2) {
+			System.out.println("Not enough parameters. rn/rename directory newName");
+		}
+		else {
+			CommandPath targetPath = mPaths.get(0);
+			CommandPath nameParameter = mPaths.get(1);
+			if(nameParameter.getSize() > 1) {
+				System.out.println("Name parameter cannot be a directory path. rn/rename directory newName");
+			}
+			else {
+				String newName = mPaths.get(1).getNext();
+				
+				String step; boolean validPath = true;
+				Directory tempDirectory = mCurrentDirectory;
+				for(int i = 0; i < targetPath.getSize(); i++) {
+					step = targetPath.getNext();
+					tempDirectory = (Directory)tempDirectory.getComponent(step);
+					if(tempDirectory == null) {
+						validPath = false;
+						break;
+					}
+				}
+				if(validPath) {
+					tempDirectory.rename(newName);
+				}
+			}
 		}
 	}
 }
