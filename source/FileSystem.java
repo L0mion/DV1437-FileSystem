@@ -1,4 +1,6 @@
+
 import java.util.*;
+import java.io.*;
 
 /*This is the main class of the program*/
 
@@ -6,7 +8,7 @@ public class FileSystem {
 	
 	/*Constructors*/
 	public FileSystem() {
-		mCurrentDirectory = new Directory("root");
+		mCurrentDirectory = new Directory("root", null);
 		mCurrentAction = "";
 		mInput = new Scanner(System.in);
 		mRunning = true;	
@@ -136,6 +138,31 @@ public class FileSystem {
 		System.out.println("\nValid commands:");
 		for(int i = 0; i < mActions.length; i++) {
 			System.out.println(" - " + mActions[i]);
+		}
+	}
+	
+	private void save() {
+	
+		/*
+		 * Find root directory
+		 */
+		Component parent = null;
+		do {
+			
+			parent = mCurrentDirectory.getParent();
+		
+		}while(parent != null);
+		
+		/*
+		 * Save root which will save everything under root
+		 */
+		 try {
+			 
+			FileOutputStream fileStream = new FileOutputStream("../resources/fileSystem.ffs");
+			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
+			objectStream.writeObject(mCurrentDirectory);
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

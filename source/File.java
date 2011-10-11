@@ -1,4 +1,7 @@
-public class File extends Component {
+
+import java.io.*;
+
+public class File extends Component implements Serializable{
 	
 	private int mDataPointer;
 	
