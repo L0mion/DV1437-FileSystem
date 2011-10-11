@@ -3,7 +3,7 @@ import java.io.*;
 
 /*This is the main class of the program*/
 
-public class FileSystem {
+public class FileSystem implements Serializable {
 	
 	/*Constructors*/
 	public FileSystem() {
@@ -41,7 +41,7 @@ public class FileSystem {
 	/*Members*/
 	private boolean mRunning;
 	private Directory mCurrentDirectory;
-	private Scanner mInput;
+	private transient Scanner mInput;
 	private ArrayList<CommandPath> mPaths;
 	private String mCurrentAction;
 	private String[] mActions;
@@ -140,6 +140,7 @@ public class FileSystem {
 			save();
 		}
 		else if(mCurrentAction.equals("read")) {
+			read();
 		}
 		else if(mCurrentAction.equals("create")) {
 			create();
@@ -325,7 +326,7 @@ public class FileSystem {
 			 
 			FileOutputStream fileStream = new FileOutputStream("../resources/fileSystem.ffs"); //ffs - Futuristic File System
 			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
-			objectStream.writeObject(root);
+			objectStream.writeObject(this);
 			objectStream.close();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -540,6 +541,21 @@ public class FileSystem {
 					System.out.println("org = null");
 				}
 			}
+		}
+	}
+	private void read() {
+		try {
+			 
+			FileInputStream fileStream = new FileInputStream("../resources/fileSystem.ffs"); //ffs - Futuristic File System
+			ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+			FileSystem ffs = (FileSystem)objectStream.readObject();
+			
+			mBlocks = ffs.mBlocks;
+			mCurrentDirectory = ffs.mCurrentDirectory;
+			
+			objectStream.close();
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
