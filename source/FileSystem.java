@@ -117,6 +117,7 @@ public class FileSystem {
 		else if(mCurrentAction.equals("copy")) {
 		}
 		else if(mCurrentAction.equals("append")) {
+			append();
 		}
 		else if(mCurrentAction.equals("rn") || mCurrentAction.equals("rename")) {
 			renameComponent();
@@ -141,8 +142,10 @@ public class FileSystem {
 		else if(mCurrentAction.equals("read")) {
 		}
 		else if(mCurrentAction.equals("create")) {
+			create();
 		}
 		else if(mCurrentAction.equals("cat")) {
+			cat();
 		}
 		else if(mCurrentAction.equals("ls")) {
 			list();
@@ -204,8 +207,7 @@ public class FileSystem {
 			}
 		}
 	}
-<<<<<<< HEAD
-	
+
 	private void append() {
 		
 		if(mPaths.size() > 0) {
@@ -306,7 +308,7 @@ public class FileSystem {
 		mCurrentDirectory = new Directory("root", null);
 		mCurrentAction = "";	
 		mPaths = new ArrayList<CommandPath>();
-		blocks = new ArrayList<byte[]>();
+		mBlocks = new ArrayList<byte[]>();
 	}
 	
 	private void save() {
@@ -356,6 +358,72 @@ public class FileSystem {
 					tempDirectory.rename(newName);
 				}
 			}
+		}
+	}
+
+	private void create() {
+		
+		if(mPaths.size() > 0) {
+			CommandPath relevantPath = mPaths.get(0);
+			int numPaths = relevantPath.getSize();
+			
+			Directory tempDirectory = mCurrentDirectory;
+			boolean validDir = true; String step;
+			for(int i = 0; i < numPaths - 1; i++) {
+				step = relevantPath.getNext();
+				tempDirectory = (Directory)tempDirectory.getComponent(step);
+				if(tempDirectory == null) {
+					System.out.println("'" + step + "' does not exist.");
+					validDir = false;
+					break;
+				}
+			}
+			
+			if(validDir) {
+				step = relevantPath.getNext();
+				
+				tempDirectory.addComponent(new File(step));
+			}
+		}
+	}
+
+	private void cat() {
+		
+		if(mPaths.size() > 0) {
+			CommandPath relevantPath = mPaths.get(0);
+			int numPaths = relevantPath.getSize();
+			
+			Directory tempDirectory = mCurrentDirectory;
+			boolean validDir = true; String step;
+			for(int i = 0; i < numPaths - 1; i++) {
+				step = relevantPath.getNext();
+				tempDirectory = (Directory)tempDirectory.getComponent(step);
+				if(tempDirectory == null) {
+					System.out.println("'" + step + "' does not exist.");
+					validDir = false;
+					break;
+				}
+			}
+			
+			if(validDir) {
+				step = relevantPath.getNext();
+				File file = null;
+				if(tempDirectory.getComponent(step) instanceof File) {
+					file = (File)tempDirectory.getComponent(step);
+					
+					if(file != null) {
+						
+						ArrayList<Integer> blockIndexes = file.getDataPointer();
+						for(int i=0; i<blockIndexes.size(); i++) {
+						
+							for(int j=0; j<File.BLOCK_SIZE; j++) {
+								System.out.print(mBlocks.get(blockIndexes.get(i))[j] + "  ");
+							}
+						}
+					}
+				}
+			}
+		
 		}
 	}
 }
