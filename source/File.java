@@ -32,7 +32,7 @@ public class File extends Component implements Serializable{
 	
 		int index = -1;
 		if(!mDataPointer.isEmpty()) {
-			index = mDataPointer.size()-1;
+			index = mDataPointer.get(mDataPointer.size()-1);
 		}
 		
 		return index;
