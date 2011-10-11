@@ -495,7 +495,7 @@ public class FileSystem {
 				org = ((Directory)org).getComponent(originFileName);
 				if(org != null) {
 					if(org instanceof File) {
-						System.out.println("Origin is a file.");
+						System.out.println("Origin-file found: " + originFileName + ".");
 						
 						numSteps = destination.getSize();
 						boolean validDestination = true;
@@ -510,13 +510,29 @@ public class FileSystem {
 							}
 						}
 						if(validDestination) {
-							/*COPY DATA*/
-							dir.addComponent(new File(org.name()));
-							
+							/*DEEP COPY*/
+							ObjectOutputStream oos;
+							ObjectInputStream ois;
+							try {
+								ByteArrayOutputStream bos = new ByteArrayOutputStream(); //A
+								oos = new ObjectOutputStream(bos);
+								
+								oos.writeObject(org); oos.flush();
+								ByteArrayInputStream bais  = new ByteArrayInputStream(bos.toByteArray());
+								ois = new ObjectInputStream(bais);
+								
+								File copy = (File)ois.readObject();
+								copy.rename(org.name());
+								
+								dir.addComponent(copy);
+							}
+							catch(Exception e) {
+								System.out.println("Avbruten.");
+							}
 						}
 					}
 					else {
-						/*Implement code for folders here*/
+						/*Implement future deep copy code for folders here*/
 						System.out.println("Origin is a folder. Aborting.");
 					}
 				}
