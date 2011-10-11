@@ -121,8 +121,10 @@ public class FileSystem {
 		else if(mCurrentAction.equals("rn") || mCurrentAction.equals("rename")) {
 		}
 		else if(mCurrentAction.equals("mkdir")) {
+			makeDirectory();
 		}
 		else if(mCurrentAction.equals("cd")) {
+			changeDirectory();
 		}
 		else if(mCurrentAction.equals("pwd")) {
 		}
@@ -131,6 +133,17 @@ public class FileSystem {
 		else if(mCurrentAction.equals("help")) {
 			printHelp();
 		}
+		else if(mCurrentAction.equals("save")) {
+		}
+		else if(mCurrentAction.equals("read")) {
+		}
+		else if(mCurrentAction.equals("create")) {
+		}
+		else if(mCurrentAction.equals("cat")) {
+		}
+		else if(mCurrentAction.equals("ls")) {
+			list();
+		}
 	}
 
 	//Enter dedicated command functions below:
@@ -138,6 +151,54 @@ public class FileSystem {
 		System.out.println("\nValid commands:");
 		for(int i = 0; i < mActions.length; i++) {
 			System.out.println(" - " + mActions[i]);
+		}
+	}
+	private void changeDirectory() {
+		if(mPaths.size() > 0) {
+			CommandPath targetPath = mPaths.get(0);
+			int numPath = targetPath.getSize();
+			
+			Directory tempDirectory = mCurrentDirectory;
+			String step; boolean validTarget = true;
+			for(int i = 0; i < numPath; i++) {	
+				step = targetPath.getNext();
+				tempDirectory = (Directory)tempDirectory.getComponent(step);
+				if(tempDirectory == null) {
+					validTarget = false;
+					break;
+				}
+			}
+			if(validTarget) {
+				mCurrentDirectory = tempDirectory;
+			}
+		}
+		else {
+			System.out.println("No path specified. No action taken.");
+		}
+	}
+	private void list() {
+		mCurrentDirectory.print();
+	}
+	private void makeDirectory() {
+		if(mPaths.size() > 0) {
+			CommandPath relevantPath = mPaths.get(0);
+			int numPaths = relevantPath.getSize();
+			
+			Directory tempDirectory = mCurrentDirectory;
+			boolean validDir = true; String step;
+			for(int i = 0; i < numPaths - 1; i++) {
+				step = relevantPath.getNext();
+				tempDirectory = (Directory)tempDirectory.getComponent(step);
+				if(tempDirectory == null) {
+					System.out.println("'" + step + "' does not exist.");
+					validDir = false;
+					break;
+				}
+			}
+			if(validDir) {
+				step = relevantPath.getNext();
+				tempDirectory.addComponent(new Directory(step, tempDirectory));
+			}
 		}
 	}
 	

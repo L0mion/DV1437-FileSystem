@@ -37,4 +37,7 @@ public class CommandPath {
 			System.out.println(mPaths.get(i));
 		}
 	}
+	public int getSize() {
+		return mPaths.size();
+	}
 }
