@@ -11,9 +11,9 @@ public class FileSystem {
 		mInput = new Scanner(System.in);
 		mRunning = true;	
 		mPaths = new ArrayList<CommandPath>();
-		mActions = new String[18];
+		mActions = new String[19];
 		//blocks = new ArrayList<byte[]>();
-		
+		 
 		mActions[0] = "format"; 	//bygger upp ett tomt system (“formatterar skivan”)
 		mActions[1] = "quit"; 		//lämnar körningen
 		mActions[2] = "exit";		//lämnar körningen
@@ -31,7 +31,8 @@ public class FileSystem {
 		mActions[14] = "cd"; 		//ändrar aktuell catalog
 		mActions[15] = "pwd";		//skriver namn på aktuell katalog (print working directory)
 		mActions[16] = "rm";		//tar bort en fil
-		mActions[17] = "remove";		//tar bort en fil
+		mActions[17] = "remove";	//tar bort en fil
+		mActions[18] = "help";
 		
 		start();
 	}
@@ -75,7 +76,6 @@ public class FileSystem {
 				for(int i = 0; i < mActions.length; i++) {
 					if(mCurrentAction.equals(mActions[i])) {
 						validCommand = true;
-						System.out.println("Valid command detected.");
 					}
 				}
 			}
@@ -94,6 +94,9 @@ public class FileSystem {
 					}
 					return true;
 			}
+			else {
+				System.out.println("No valid input. Enter 'help' for a list of valid commands.");
+			}
 			
 			return false;
 	}
@@ -102,5 +105,36 @@ public class FileSystem {
 		mPaths = new ArrayList<CommandPath>();
 	}
 	private void executeCommand() {
+		if(mCurrentAction == "format") {
+		}
+		else if(mCurrentAction.equals("quit") || mCurrentAction.equals("exit")) {
+			mRunning = false;
+		}
+		else if(mCurrentAction.equals("dir")) {
+		}
+		else if(mCurrentAction.equals("copy")) {
+		}
+		else if(mCurrentAction.equals("append")) {
+		}
+		else if(mCurrentAction.equals("rn") || mCurrentAction.equals("rename")) {
+		}
+		else if(mCurrentAction.equals("mkdir")) {
+		}
+		else if(mCurrentAction.equals("cd")) {
+		}
+		else if(mCurrentAction.equals("pwd")) {
+		}
+		else if(mCurrentAction.equals("rm") || mCurrentAction.equals("remove")) {
+		}
+		else if(mCurrentAction.equals("help")) {
+			printHelp();
+		}
+	}
+
+	private void printHelp() {
+		System.out.println("\nValid commands:");
+		for(int i = 0; i < mActions.length; i++) {
+			System.out.println(" - " + mActions[i]);
+		}
 	}
 }
