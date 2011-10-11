@@ -13,7 +13,7 @@ public class FileSystem {
 		mRunning = true;	
 		mPaths = new ArrayList<CommandPath>();
 		mActions = new String[19];
-		blocks = new ArrayList<byte[]>();
+		mBlocks = new ArrayList<byte[]>();
 		 
 		mActions[0] = "format"; 	//bygger upp ett tomt system (“formatterar skivan”)
 		mActions[1] = "quit"; 		//lämnar körningen
@@ -45,7 +45,7 @@ public class FileSystem {
 	private ArrayList<CommandPath> mPaths;
 	private String mCurrentAction;
 	private String[] mActions;
-	private ArrayList<byte[]> blocks;
+	private ArrayList<byte[]> mBlocks;
 	
 	/*Methods*/
 	private void start() {
@@ -204,6 +204,89 @@ public class FileSystem {
 			}
 		}
 	}
+<<<<<<< HEAD
+	
+	private void append() {
+		
+		if(mPaths.size() > 0) {
+			CommandPath relevantPath = mPaths.get(0);
+			int numPaths = relevantPath.getSize();
+			
+			Directory tempDirectory = mCurrentDirectory;
+			boolean validDir = true; String step;
+			for(int i = 0; i < numPaths - 1; i++) {
+				step = relevantPath.getNext();
+				tempDirectory = (Directory)tempDirectory.getComponent(step);
+				if(tempDirectory == null) {
+					System.out.println("'" + step + "' does not exist.");
+					validDir = false;
+					break;
+				}
+			}
+			
+			if(validDir) {
+				step = relevantPath.getNext();
+				File file = null;
+				if(tempDirectory.getComponent(step) instanceof File) {
+					file = (File)tempDirectory.getComponent(step);
+					
+					if(file != null) {
+						
+						String input = mInput.nextLine();
+						byte[] bytes = input.getBytes();
+						
+						copyBytes(file, bytes); 
+						
+					}
+					else {
+						System.out.println("File does not exist");
+					}
+				}
+				else {
+					System.out.println("'" + step + "'" + " is not a file");
+				}
+			}
+		}
+		
+	}
+	
+	private void copyBytes(File file, byte[] bytes) {
+	
+		int currentByte = 0;
+		int currentBlock = file.getCurrentBlockIndex();
+		if(currentBlock == -1) {
+			mBlocks.add(new byte[File.BLOCK_SIZE]);
+			file.addBlockIndex(mBlocks.size()-1);
+			file.setBlockPosition(0);
+			
+			currentBlock = file.getCurrentBlockIndex();
+		}
+		
+		int blockPosition = file.getBlockPosition();
+		
+		while(currentByte < bytes.length) {
+		
+			
+			for(int i=blockPosition; i<File.BLOCK_SIZE; i++) {
+			
+				mBlocks.get(currentBlock)[i] = bytes[currentByte];
+			
+				currentByte++;
+				if(currentByte >= bytes.length) {
+					break;
+				}
+				if(i >= File.BLOCK_SIZE) {
+					mBlocks.add(new byte[File.BLOCK_SIZE]);
+					file.addBlockIndex(mBlocks.size()-1);
+					file.setBlockPosition(0);
+				}
+			}
+		}
+		
+		
+	}
+	
+
 	private void printWorkingDirectory() {
 		Directory tempDirectory = mCurrentDirectory;
 		
@@ -225,6 +308,7 @@ public class FileSystem {
 		mPaths = new ArrayList<CommandPath>();
 		blocks = new ArrayList<byte[]>();
 	}
+	
 	private void save() {
 	
 		/*
