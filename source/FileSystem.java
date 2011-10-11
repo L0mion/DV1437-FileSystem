@@ -131,6 +131,7 @@ public class FileSystem {
 		}
 	}
 
+	//Enter dedicated command functions below:
 	private void printHelp() {
 		System.out.println("\nValid commands:");
 		for(int i = 0; i < mActions.length; i++) {
