@@ -1,19 +1,30 @@
-import java.util.*;
 
-public class Directory extends Component {
+import java.util.*;
+import java.io.*;
+
+public class Directory extends Component implements Serializable{
 	/*Constructors*/
-	public Directory(String name) {
+	public Directory(String name, Component parent) {
 		super(name);
 		
 		mComponents = new ArrayList<Component>();
+		mParent = parent;
+		
 	}
 	
 	/*Members*/
 	private ArrayList<Component> mComponents;
+	private mParent;
 	
 	/*Attributes*/
 	
 	/*Methods*/
+	
+	private Component getParent() {
+	
+		return mParent;
+	}
+	
 	public Component getComponent(String name) {
 	
 		/* 

@@ -103,4 +103,23 @@ public class FileSystem {
 	}
 	private void executeCommand() {
 	}
+	
+	private void save() {
+	
+		/*
+		 * Find root directory
+		 */
+		Component parent = null;
+		do {
+			
+			parent = mCurrentDirectory.getParent();
+		
+		}while(parent != null);
+		
+		/*
+		 * Save root which will save everything under root
+		 */
+		 
+		 FileOutputStream fileStream = new FileOutputStream("../resources/
+	}
 }

@@ -1,4 +1,7 @@
-public abstract class Component {
+
+import java.io.*;
+
+public abstract class Component implements Serializable {
 	/*Constructors*/
 	public Component(String name) {
 		mName = name;
