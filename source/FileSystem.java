@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.io.*;
 
@@ -48,8 +47,6 @@ public class FileSystem {
 	private String[] mActions;
 	private ArrayList<byte[]> blocks;
 	
-	/*Attributes*/
-	
 	/*Methods*/
 	private void start() {
 		while(mRunning) {
@@ -61,6 +58,8 @@ public class FileSystem {
 	private boolean validCommand() {
 			//In order to avoid inconsistencies - reset relevant command variables.
 			resetCommandVariables();
+			//Print complete path for convenience.
+			printWorkingDirectory();
 		
 			/*Get input*/
 			String currentInput;
@@ -127,6 +126,7 @@ public class FileSystem {
 			changeDirectory();
 		}
 		else if(mCurrentAction.equals("pwd")) {
+			printWorkingDirectory();
 		}
 		else if(mCurrentAction.equals("rm") || mCurrentAction.equals("remove")) {
 		}
@@ -143,6 +143,30 @@ public class FileSystem {
 		}
 		else if(mCurrentAction.equals("ls")) {
 			list();
+		}
+	}
+	private void save() {
+	
+		/*
+		 * Find root directory
+		 */
+		Component parent = null;
+		do {
+			
+			parent = mCurrentDirectory.getParent();
+		
+		}while(parent != null);
+		
+		/*
+		 * Save root which will save everything under root
+		 */
+		 try {
+			 
+			FileOutputStream fileStream = new FileOutputStream("../resources/fileSystem.ffs");
+			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
+			objectStream.writeObject(mCurrentDirectory);
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -201,29 +225,18 @@ public class FileSystem {
 			}
 		}
 	}
-	
-	private void save() {
-	
-		/*
-		 * Find root directory
-		 */
-		Component parent = null;
-		do {
-			
-			parent = mCurrentDirectory.getParent();
+	private void printWorkingDirectory() {
+		Directory tempDirectory = mCurrentDirectory;
 		
-		}while(parent != null);
-		
-		/*
-		 * Save root which will save everything under root
-		 */
-		 try {
-			 
-			FileOutputStream fileStream = new FileOutputStream("../resources/fileSystem.ffs");
-			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
-			objectStream.writeObject(mCurrentDirectory);
-		}catch(Exception e) {
-			e.printStackTrace();
+		Stack<String> wd = new Stack<String>();
+		wd.push(tempDirectory.name());
+		while(tempDirectory.getParent() != null) {
+			tempDirectory = (Directory)tempDirectory.getParent();
+			wd.push(tempDirectory.name());
 		}
+		System.out.print("Working Dir: ");
+		while(!wd.empty()) {
+			System.out.print(wd.pop() + "/");
+		} System.out.print("\n");
 	}
 }
